@@ -80,20 +80,6 @@
       },
       "defaultValue": "DMZ-sn"
     },
-    "addc01NicIPAddress": {
-      "type": "string",
-      "metadata": {
-        "description": "The internal IP address of the first Domain Controller, this IP address will be statically assigned to the DC and must be a valid ip address within the Internal subnet."
-      },
-      "defaultValue": "10.0.0.101"
-    },
-    "addc02NicIPAddress": {
-      "type": "string",
-      "metadata": {
-        "description": "The internal IP address of the second Domain Controller, this IP address will be statically assigned to the DC and must be a valid ip address within the Internal subnet."
-      },
-      "defaultValue": "10.0.0.102"
-    },
     "adfs01NicIPAddress": {
       "type": "string",
       "metadata": {
@@ -129,19 +115,12 @@
       },
       "defaultValue": "10.0.0.200"
     },
-    "addcVmNamePrefix": {
-      "type": "string",
-      "metadata": {
-        "description": "Virtual Machine name prefix for Domain Controllers"
-      },
-      "defaultValue": "dc"
-    },
     "adfsVmNamePrefix": {
       "type": "string",
       "metadata": {
         "description": "Virtual Machine name prefix for ADFS servers"
       },
-      "defaultValue": "adfs"
+      "defaultValue": "dc-adfs"
     },
     "wapVmNamePrefix": {
       "type": "string",
@@ -149,13 +128,6 @@
         "description": "Virtual Machine name prefix for WAP servers"
       },
       "defaultValue": "wap"
-    },
-    "addcVMsSize": {
-      "type": "string",
-      "metadata": {
-        "description": "The vm size of the Domain Controllers"
-      },
-      "defaultValue": "Standard_DS2_V2"
     },
     "adfsVMsSize": {
       "type": "string",
@@ -187,7 +159,8 @@
     }
   },
   "variables": {
-    "baseUrl": "https://raw.githubusercontent.com/paulomarquesc/adfs-6vms-regular-template-based/master/",
+    "oldBaseUrl": "https://raw.githubusercontent.com/paulomarquesc/adfs-6vms-regular-template-based/master/",
+    "baseUrl": "https://raw.githubusercontent.com/liketecpaedi/ad-and-adfs-with-wap-test/master/",
     "storageAccountNamePrefix": "[concat(uniquestring(resourceGroup().id),'sa')]",
     "deployStorageAccountsUrl": "[concat(variables('baseUrl'),'/deployStorageAccounts.json')]",
     "deployPublicIPsUrl": "[concat(variables('baseUrl'),'/deployPublicIPs.json')]",
@@ -195,7 +168,6 @@
     "publicIPAddressType": "Static",
     "deployAvailabilitySetsUrl": "[concat(variables('baseUrl'),'/deployAvailabilitySets.json')]",
     "availabilitySetNames": [
-      "addc-as",
       "adfs-as",
       "wap-as"
     ],
@@ -403,8 +375,6 @@
           },
           "ipAddresses": {
             "value": [
-              "[parameters('addc01NicIPAddress')]",
-              "[parameters('addc02NicIPAddress')]",
               "[parameters('adfs01NicIPAddress')]",
               "[parameters('adfs02NicIPAddress')]",
               "[parameters('wap01NicIPAddress')]",
@@ -413,8 +383,6 @@
           },
           "nicNames": {
             "value": [
-              "[concat(parameters('addcVmNamePrefix'),'1-nic')]",
-              "[concat(parameters('addcVmNamePrefix'),'2-nic')]",
               "[concat(parameters('adfsVmNamePrefix'),'1-nic')]",
               "[concat(parameters('adfsVmNamePrefix'),'2-nic')]",
               "[concat(parameters('wapVmNamePrefix'),'1-nic')]",
@@ -466,47 +434,6 @@
       }
     },
     {
-      "name": "addcVmsDeployment",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "dependsOn": [
-        "Microsoft.Resources/deployments/nicsDeployment"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('deployVmsUrl')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "location": {
-            "value": "[parameters('location')]"
-          },
-          "adminUsername": {
-            "value": "[parameters('adminUsername')]"
-          },
-          "adminPassword": {
-            "value": "[parameters('adminPassword')]"
-          },
-          "vmNamePrefix": {
-            "value": "[parameters('addcVmNamePrefix')]"
-          },
-          "vmSize": {
-            "value": "[parameters('addcVMsSize')]"
-          },
-          "availabilitySetName": {
-            "value": "[variables('availabilitySetNames')[0]]"
-          },
-          "vmCount": {
-            "value": 2
-          },
-          "storageAccountNamePrefix": {
-            "value": "[variables('storageAccountNamePrefix')]"
-          }
-        }
-      }
-    },
-    {
       "name": "adfsVmsDeployment",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
@@ -536,7 +463,7 @@
             "value": "[parameters('adfsVMsSize')]"
           },
           "availabilitySetName": {
-            "value": "[variables('availabilitySetNames')[1]]"
+            "value": "[variables('availabilitySetNames')[0]]"
           },
           "vmCount": {
             "value": 2
@@ -577,7 +504,7 @@
             "value": "[parameters('wapVMsSize')]"
           },
           "availabilitySetName": {
-            "value": "[variables('availabilitySetNames')[2]]"
+            "value": "[variables('availabilitySetNames')[1]]"
           },
           "vmCount": {
             "value": 2
