@@ -26,7 +26,7 @@
   },
   "resources": [
     {
-      "comments": "DC01 NIC",
+      "comments": "ADFS01 NIC",
       "name": "[parameters('nicNames')[0]]",
       "type": "Microsoft.Network/networkInterfaces",
       "location": "[parameters('location')]",
@@ -38,48 +38,6 @@
             "properties": {
               "privateIPAllocationMethod": "Static",
               "privateIPAddress": "[parameters('ipAddresses')[0]]",
-              "subnet": {
-                "id": "[parameters('subnetIds')[0]]"
-              }
-            }
-          }
-        ]
-      }
-    },
-    {
-      "comments": "DC02 NIC",
-      "name": "[parameters('nicNames')[1]]",
-      "type": "Microsoft.Network/networkInterfaces",
-      "location": "[parameters('location')]",
-      "apiVersion": "2015-06-15",
-      "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig1",
-            "properties": {
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[parameters('ipAddresses')[1]]",
-              "subnet": {
-                "id": "[parameters('subnetIds')[0]]"
-              }
-            }
-          }
-        ]
-      }
-    },
-    {
-      "comments": "ADFS01 NIC",
-      "name": "[parameters('nicNames')[2]]",
-      "type": "Microsoft.Network/networkInterfaces",
-      "location": "[parameters('location')]",
-      "apiVersion": "2015-06-15",
-      "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig1",
-            "properties": {
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[parameters('ipAddresses')[2]]",
               "subnet": {
                 "id": "[parameters('subnetIds')[0]]"
               },
@@ -95,7 +53,7 @@
     },
     {
       "comments": "ADFS02 NIC",
-      "name": "[parameters('nicNames')[3]]",
+      "name": "[parameters('nicNames')[1]]",
       "type": "Microsoft.Network/networkInterfaces",
       "location": "[parameters('location')]",
       "apiVersion": "2015-06-15",
@@ -105,7 +63,7 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[parameters('ipAddresses')[3]]",
+              "privateIPAddress": "[parameters('ipAddresses')[1]]",
               "subnet": {
                 "id": "[parameters('subnetIds')[0]]"
               },
@@ -121,7 +79,7 @@
     },
     {
       "comments": "WAP01 NIC",
-      "name": "[parameters('nicNames')[4]]",
+      "name": "[parameters('nicNames')[2]]",
       "type": "Microsoft.Network/networkInterfaces",
       "location": "[parameters('location')]",
       "apiVersion": "2015-06-15",
@@ -131,7 +89,7 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[parameters('ipAddresses')[4]]",
+              "privateIPAddress": "[parameters('ipAddresses')[2]]",
               "subnet": {
                 "id": "[parameters('subnetIds')[1]]"
               },
@@ -152,7 +110,7 @@
     },
     {
       "comments": "WAP02 NIC",
-      "name": "[parameters('nicNames')[5]]",
+      "name": "[parameters('nicNames')[3]]",
       "type": "Microsoft.Network/networkInterfaces",
       "location": "[parameters('location')]",
       "apiVersion": "2015-06-15",
@@ -162,7 +120,7 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[parameters('ipAddresses')[5]]",
+              "privateIPAddress": "[parameters('ipAddresses')[3]]",
               "subnet": {
                 "id": "[parameters('subnetIds')[1]]"
               },
